@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% block title %}Welcome to PetHelpHub{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-text">
+        <h1>Your Trusted Companion for Pet Care</h1>
+        <p>Providing quick access to essential tools and information for pet owners in Lahore.</p>
+    </div>
+</div>
+
+<div class="container page-section">
+    <h2>Our Services</h2>
+    <div class="services-grid">
+        <a href="/symptom-checker" class="service-card">
+            <h3>Symptom Checker</h3>
+            <p>Get preliminary advice on common pet symptoms. (Not a substitute for a vet!)</p>
+        </a>
+        <a href="/lost-pet-map" class="service-card">
+            <h3>Lost Pet Map</h3>
+            <p>View a map and report a lost or found pet in your area.</p>
+        </a>
+        <a href="/wip" class="service-card">
+            <h3>Community Forum</h3>
+            <p>Connect with other pet owners. (Work in Progress)</p>
+        </a>
+    </div>
+</div>
+
+<div class="container page-section" id="about">
+    <h2>About Us</h2>
+    <p>
+        PetHelpHub was created to create a centralized platform for pet owners in Lahore to access essential tools and information after experiencing firsthand how difficult it is for new pet owners.
+        Our mission is to enhance the well-being of pets and support their owners through easy access to resources and community engagement.
+        We are committed to providing reliable and user-friendly services to help you take the best care of your furry friends.
+    </p>
+</div>
+
+<div class="container page-section" id="contact">
+    <h2>Contact Us</h2>
+    <p>
+        If you have any comments or suggestions, please let us know <a href="https://docs.google.com/forms/d/e/1FAIpQLSdB86syHNYXcP7pWUHrWzStozAm-WYX3TQanLeep9bxfiHl7g/viewform?usp=header" target="_blank" rel="noopener noreferrer">here</a>
+    </p>
+</div>
+{% endblock %}

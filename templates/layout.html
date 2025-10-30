@@ -1,0 +1,33 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PetHelpHub{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-brand">PetHelpHub 🐾</a>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/symptom-checker">Symptom Checker</a></li>
+                <li><a href="/lost-pet-map">Lost Pet Map</a></li>
+                <li><a href="/wip">Community (WIP)</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 PetHelpHub. All Rights Reserved. For informational purposes only. Always consult a vet.</p>
+    </footer>
+</body>
+</html>

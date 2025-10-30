@@ -1,0 +1,140 @@
+{% extends 'layout.html' %}
+{% block title %}Symptom Checker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Pet Symptom Checker</h1>
+    <div class="disclaimer">
+        <strong>CRITICAL VETERINARY DISCLAIMER:</strong> This tool provides general information and is NOT a substitute for a diagnosis from a qualified veterinarian. Always consult your vet for any health concerns. NEVER give human medications to pets without explicit veterinary direction.
+    </div>
+
+    <h2>Select Your Pet</h2>
+    <div class="animal-selection">
+        <div class="animal-card" id="select-dog">
+            <h3>Dogs</h3>
+        </div>
+        <div class="animal-card" id="select-cat">
+            <h3>Cats</h3>
+        </div>
+    </div>
+
+    <div id="dog-checker" class="checker-container" style="display:none;">
+        <h3>Dog Symptom Checker</h3>
+        <div class="checklist">
+            <h4>Quick Observation Checklist</h4>
+            <ul>
+                {% for item in dog_checklist %}
+                    <li>{{ item|safe }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="checker-form">
+            <label>Select all applicable symptoms:</label>
+            <div class="symptom-list">
+                <div><input type="checkbox" value="vomiting" id="dog_vomiting"><label for="dog_vomiting">Vomiting</label></div>
+                <div><input type="checkbox" value="diarrhea" id="dog_diarrhea"><label for="dog_diarrhea">Diarrhea</label></div>
+                <div><input type="checkbox" value="lethargy" id="dog_lethargy"><label for="dog_lethargy">Lethargy / Weakness</label></div>
+                <div><input type="checkbox" value="coughing" id="dog_coughing"><label for="dog_coughing">Coughing</label></div>
+                <div><input type="checkbox" value="itching_scratching" id="dog_itching"><label for="dog_itching">Itching & Scratching</label></div>
+            </div>
+            <button class="get-advice-btn" data-animal="dog">Get Advice</button>
+        </div>
+    </div>
+
+    <div id="cat-checker" class="checker-container" style="display:none;">
+        <h3>Cat Symptom Checker</h3>
+        <div class="checklist">
+            <h4>Quick Observation Checklist</h4>
+            <ul>
+                {% for item in cat_checklist %}
+                    <li>{{ item|safe }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="checker-form">
+            <label>Select all applicable symptoms:</label>
+            <div class="symptom-list">
+                <div><input type="checkbox" value="vomiting" id="cat_vomiting"><label for="cat_vomiting">Vomiting</label></div>
+                <div><input type="checkbox" value="urinating_outside_litter_box" id="cat_urinating"><label for="cat_urinating">Urinating Outside Litter Box</label></div>
+                <div><input type="checkbox" value="hiding_lethargy" id="cat_hiding"><label for="cat_hiding">Hiding / Lethargy</label></div>
+                <div><input type="checkbox" value="sneezing_discharge" id="cat_sneezing"><label for="cat_sneezing">Sneezing / Discharge</label></div>
+                <div><input type="checkbox" value="changes_in_appetite" id="cat_appetite"><label for="cat_appetite">Changes in Appetite</label></div>
+            </div>
+            <button class="get-advice-btn" data-animal="cat">Get Advice</button>
+        </div>
+    </div>
+
+    <div id="advice-result" class="advice-box" style="display:none;">
+        <h3>Preliminary Information</h3>
+        <h4>Overall Severity:</h4>
+        <p id="severity"></p>
+        
+        <h4>Possible Causes May Include:</h4>
+        <ul id="probable-diagnoses"></ul>
+        
+        <h4>Recommended Course of Action:</h4>
+        <p id="course-of-action"></p>
+    </div>
+
+</div>
+
+<script>
+    // The JavaScript for this page is unchanged from the previous version
+    document.addEventListener('DOMContentLoaded', function() {
+        const dogCard = document.getElementById('select-dog');
+        const catCard = document.getElementById('select-cat');
+        const dogChecker = document.getElementById('dog-checker');
+        const catChecker = document.getElementById('cat-checker');
+        const adviceResult = document.getElementById('advice-result');
+
+        dogCard.addEventListener('click', () => {
+            dogChecker.style.display = 'block';
+            catChecker.style.display = 'none';
+            adviceResult.style.display = 'none';
+        });
+
+        catCard.addEventListener('click', () => {
+            dogChecker.style.display = 'none';
+            catChecker.style.display = 'block';
+            adviceResult.style.display = 'none';
+        });
+
+        document.querySelectorAll('.get-advice-btn').forEach(button => {
+            button.addEventListener('click', async () => {
+                const animalType = button.dataset.animal;
+                const checkerDiv = document.getElementById(`${animalType}-checker`);
+                const checkedBoxes = checkerDiv.querySelectorAll('input[type="checkbox"]:checked');
+                const symptoms = Array.from(checkedBoxes).map(cb => cb.value);
+
+                if (symptoms.length === 0) {
+                    alert('Please select at least one symptom.');
+                    return;
+                }
+
+                const response = await fetch('/api/symptom-check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ animal_type: animalType, symptoms: symptoms }),
+                });
+                const data = await response.json();
+
+                if (Object.keys(data).length > 0) {
+                    document.getElementById('severity').textContent = data.severity;
+                    document.getElementById('course-of-action').textContent = data.course_of_action;
+                    const diagnosesList = document.getElementById('probable-diagnoses');
+                    diagnosesList.innerHTML = '';
+                    data.probable_diagnoses.forEach(diag => {
+                        const li = document.createElement('li');
+                        li.textContent = diag;
+                        diagnosesList.appendChild(li);
+                    });
+                    adviceResult.style.display = 'block';
+                } else {
+                    alert('Could not retrieve advice for the selected symptoms.');
+                    adviceResult.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

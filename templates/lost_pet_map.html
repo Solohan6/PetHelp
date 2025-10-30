@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+{% block title %}Lost Pet Map{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-full">
+    <h1>Lost Pet Map - Lahore</h1>
+    <p>
+        <strong>To Report a Lost Pet:</strong> Click anywhere on the map to open the form and create a search grid. <br>
+        <strong>To View Details & Report Sightings:</strong> Scroll down to see the list of reports. Click a pet's <strong>red pin</strong> on the map to open options for reporting a sighting.
+    </p>
+
+    <div class="map-key">
+        <h4>Map Legend</h4>
+        <ul>
+            <li><span class="key-dot blue"></span> Central Position</li>
+            <li><span class="key-dot red"></span> Lost Pet</li>
+            <li><span class="key-dot green"></span> Pet Sighted / Found</li>
+            <li><span class="key-dot yellow"></span> Search in Progress</li>
+        </ul>
+    </div>
+
+    <div id="map"></div>
+
+    <div id="lost-pet-form-container" class="form-popup" style="display:none;">
+        <form id="lost-pet-form" enctype="multipart/form-data">
+            <h3>Report a Lost Pet</h3>
+            <p>Please provide details for the pet lost at this location.</p>
+            <input type="hidden" id="pet-lat" name="latitude">
+            <input type="hidden" id="pet-lng" name="longitude">
+
+            <label for="pet-name">Pet's Name:</label>
+            <input type="text" id="pet-name" name="pet_name" required>
+
+            <label for="contact-details">Your Contact (Phone/Email):</label>
+            <input type="text" id="contact-details" name="contact" required>
+
+            <label for="pet-description">Description (Max 100 chars):</label>
+            <textarea id="pet-description" name="description" maxlength="100" required></textarea>
+            
+            <label for="pet-image">Pet Image:</label>
+            <input type="file" id="pet-image" name="pet_image" accept="image/*" required>
+
+            <div class="form-buttons">
+                <button type="submit">Submit Report</button>
+                <button type="button" id="cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="pet-details-container" class="container">
+        <h3>Current Reports</h3>
+        <div id="pet-details-list">
+            <p>Everyone's fluffy friends are currently safe and sound at home.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const centralLocations = {{ locations|tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}
