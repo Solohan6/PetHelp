@@ -12,44 +12,70 @@ DATA_FILE = 'data.json'
 
 # --- DATA FOR SYMPTOM CHECKER ---
 
-DOG_SYMPTOM_DATA = {
+# PUPPY DATA (Focus on acute, severe, infectious diseases)
+PUPPY_SYMPTOM_DATA = {
     "vomiting": {
-        "severity": "Moderate to Severe",
-        "probable_diagnoses": ["Dietary Indiscretion (eating something they shouldn't have)", "Gastroenteritis (viral or bacterial)", "Pancreatitis", "Foreign Body Obstruction (a blockage)", "Kidney or Liver Issues", "Toxin Ingestion"],
-        "course_of_action": "Withhold food for 12 hours (water is okay). If vomiting stops, offer a small meal of bland food (boiled chicken and rice).  GO TO A VET IMMEDIATELY if the dog is trying to vomit but can't, has a bloated abdomen, is very lethargic, or if there is blood in the vomit. For persistent vomiting (>24 hours), see a vet."
+        "severity": "Severe",
+        "probable_diagnoses": ["Parvovirus (HIGHLY contagious/fatal)", "Intestinal Parasites (Worms, Giardia)", "Foreign Body Obstruction (eating a toy, etc.)", "Dietary Indiscretion"],
+        "course_of_action": "Vomiting in a puppy is very serious as they dehydrate quickly. GO TO A VET IMMEDIATELY, especially if paired with diarrhea or lethargy. This could be Parvovirus. Do not wait."
     },
     "diarrhea": {
-        "severity": "Mild to Severe",
-        "probable_diagnoses": ["Dietary Indiscretion or sudden food change", "Stress or excitement", "Intestinal Parasites (worms)", "Viral Infections (e.g., Parvovirus - very serious in puppies)", "Inflammatory Bowel Disease (IBD)"],
-        "course_of_action": "Ensure constant access to fresh water to prevent dehydration. A bland diet (boiled chicken/rice) can help.  GO TO A VET IMMEDIATELY if the diarrhea is black, tarry, contains a lot of blood, or is accompanied by vomiting and extreme weakness. If diarrhea persists for more than 48 hours, a vet visit is needed."
+        "severity": "Severe",
+        "probable_diagnoses": ["Parvovirus", "Intestinal Parasites (Coccidia, Giardia, worms)", "Sudden food change", "Stress"],
+        "course_of_action": "Diarrhea in puppies can be fatal due to dehydration. GO TO A VET IMMEDIATELY, especially if the stool is bloody, black, or watery, or if the puppy is also lethargic. This is the #1 sign of Parvovirus."
     },
     "lethargy": {
-        "severity": "Varies - A Sign of Many Issues",
-        "probable_diagnoses": ["Infection (bacterial or viral)", "Pain (from injury, arthritis, etc.)", "Metabolic Disease (diabetes, thyroid issues)", "Heart or Organ problems", "Poisoning"],
-        "course_of_action": "Lethargy is a non-specific but important sign. Monitor for other symptoms. Ensure the dog is eating and drinking. If lethargy is sudden, extreme, or lasts more than 24 hours, it warrants a vet visit. If it's paired with collapse or difficulty breathing, it's an emergency."
+        "severity": "Severe",
+        "probable_diagnoses": ["Parvovirus", "Distemper", "Hypoglycemia (low blood sugar, esp. in tiny breeds)", "Infection or Fever"],
+        "course_of_action": "A puppy that is weak, wobbly, or won't play is a medical emergency. Try rubbing a small amount of honey or sugar water on their gums (for hypoglycemia) and GO TO A VET IMMEDIATELY. Do not 'wait and see'."
+    },
+    "coughing_sneezing": {
+        "severity": "Moderate to Severe",
+        "probable_diagnoses": ["Kennel Cough", "Canine Distemper (very serious)", "Pneumonia", "Something stuck in the throat"],
+        "course_of_action": "Isolate the puppy from all other dogs. Monitor closely. SEE A VET. A cough can progress to fatal pneumonia quickly in an un-vaccinated puppy. This is also a sign of Distemper, which is a critical emergency."
+    }
+}
+
+# ADULT DOG DATA (Focus on chronic issues, organ function, allergies)
+ADULT_DOG_SYMPTOM_DATA = {
+    "vomiting": {
+        "severity": "Moderate to Severe",
+        "probable_diagnoses": ["Dietary Indiscretion (garbage gut)", "Gastroenteritis", "Pancreatitis (often after a fatty meal)", "Foreign Body Obstruction", "Kidney or Liver Issues", "Toxin Ingestion"],
+        "course_of_action": "Withhold food for 12 hours (water is okay). If vomiting stops, offer a small meal of bland food (boiled chicken/rice). GO TO A VET if the dog is trying to vomit but can't, has a bloated abdomen, is very lethargic, or if there is blood in the vomit."
+    },
+    "diarrhea": {
+        "severity": "Mild to Moderate",
+        "probable_diagnoses": ["Dietary Indiscretion or sudden food change", "Stress", "Intestinal Parasites", "Inflammatory Bowel Disease (IBD)", "Food Allergy"],
+        "course_of_action": "Ensure constant access to fresh water. A bland diet (boiled chicken/rice) can help. GO TO A VET if the diarrhea is black, tarry, contains a lot of blood, or is paired with vomiting and weakness. If it persists for more than 48 hours, see a vet."
+    },
+    "lethargy": {
+        "severity": "Significant",
+        "probable_diagnoses": ["Pain (from injury, arthritis)", "Infection (e.g., tick-borne disease)", "Metabolic Disease (diabetes, thyroid)", "Heart or Organ problems", "Poisoning"],
+        "course_of_action": "Lethargy in an adult dog is a serious sign of an underlying problem. If it is sudden, extreme, or lasts more than 24 hours, it warrants a vet visit. If paired with collapse or difficulty breathing, it's an emergency."
     },
     "coughing": {
-        "severity": "Mild to Severe",
-        "probable_diagnoses": ["Kennel Cough (infectious tracheobronchitis)", "Something stuck in the throat", "Heart Disease (especially in older, small-breed dogs)", "Pneumonia or other respiratory infections", "Collapsing Trachea"],
-        "course_of_action": "A mild cough can be monitored at home for a day or two. Isolate from other dogs.  GO TO A VET IMMEDIATELY if the dog has blue-tinged gums, is struggling to breathe, or collapses. A persistent, harsh, or wet-sounding cough requires a vet visit to rule out serious conditions."
+        "severity": "Moderate to Severe",
+        "probable_diagnoses": ["Kennel Cough", "Heart Disease (congestive heart failure)", "Pneumonia", "Collapsing Trachea (common in small breeds)", "Chronic Bronchitis"],
+        "course_of_action": "A mild cough can be monitored, but a persistent, harsh, or wet-sounding cough requires a vet visit. GO TO A VET IMMEDIATELY if the cough is worse at night, or if the dog has blue-tinged gums or is struggling to breathe. This can be a sign of heart failure."
     },
     "itching_scratching": {
         "severity": "Mild to Moderate",
-        "probable_diagnoses": ["Fleas or Ticks", "Environmental Allergies (pollen, dust)", "Food Allergies", "Mange (mites)", "Skin infection (bacterial or yeast)"],
-        "course_of_action": "Check thoroughly for fleas using a flea comb. You can give a soothing oatmeal bath. Do not use medicated shampoos without vet advice. If itching is severe, causing open sores, hair loss, or is accompanied by a bad smell, a vet visit is needed to diagnose the underlying cause. Antihistamines like Cetirizine (Rigix) can sometimes be used, but ONLY after consulting your vet for the correct dosage."
+        "probable_diagnoses": ["Environmental Allergies (pollen, dust)", "Food Allergies", "Fleas or Ticks", "Mange (mites)", "Skin infection (bacterial or yeast)"],
+        "course_of_action": "Check thoroughly for fleas. You can give a soothing oatmeal bath. If itching is constant, causing open sores, hair loss, or a bad smell, see a vet. They may need allergy medication or special shampoo. Do not use human medicated creams without vet approval."
     }
 }
 
 CAT_SYMPTOM_DATA = {
+    # ... (Cat data remains the same as before) ...
     "vomiting": {
         "severity": "Moderate to Severe",
         "probable_diagnoses": ["Hairballs", "Eating too fast", "Dietary Indiscretion", "Foreign Body Obstruction", "Inflammatory Bowel Disease (IBD)", "Kidney Disease (very common in older cats)", "Hyperthyroidism"],
-        "course_of_action": "Occasional vomiting of hairballs can be normal. If vomiting is frequent (more than once a day), contains blood, or is paired with lethargy and lack of appetite, a vet visit is crucial.  Do NOT give any human medications. Withhold food for a few hours and ensure water is available."
+        "course_of_action": "Occasional vomiting of hairballs can be normal. If vomiting is frequent (more than once a day), contains blood, or is paired with lethargy and lack of appetite, a vet visit is crucial. Do NOT give any human medications. Withhold food for a few hours and ensure water is available."
     },
     "urinating_outside_litter_box": {
         "severity": "Potentially Severe",
         "probable_diagnoses": ["Feline Lower Urinary Tract Disease (FLUTD)", "Urinary Tract Infection (UTI)", "Bladder Stones or Crystals (can cause a blockage)", "Stress or anxiety", "Dirty litter box or dislike of the litter type"],
-        "course_of_action": "This can be a medical emergency, ESPECIALLY for male cats. A urinary blockage is fatal if not treated. If your cat is straining to urinate with little or no output, crying in the litter box, or seems in pain, GO TO AN EMERGENCY VET IMMEDIATELY.  For other cases, ensure the litter box is clean and accessible and schedule a vet appointment to rule out medical issues."
+        "course_of_action": "This can be a medical emergency, especially for male cats. A urinary blockage is fatal if not treated. If your cat is straining to urinate with little or no output, crying in the litter box, or seems in pain, GO TO AN EMERGENCY VET IMMEDIATELY. For other cases, ensure the litter box is clean and accessible and schedule a vet appointment to rule out medical issues."
     },
     "hiding_lethargy": {
         "severity": "Significant - Cats Hide Pain",
@@ -68,17 +94,18 @@ CAT_SYMPTOM_DATA = {
     }
 }
 
-# NEW: Checklist data
+# UPDATED: Checklist data
 DOG_CHECKLIST = [
     "Behavior: Is your dog acting unusually quiet, agitated, or aggressive?",
     "Appetite & Water Intake: Are they eating/drinking more or less than usual?",
-    "Gums: Are their gums a healthy pink, or are they pale, white, or blue?",
+    "Gums: Are their gums a healthy pink, or are they pale, white, blue, or bright red?",
     "Energy Level: Is their energy significantly lower than normal?",
     "Mobility: Are they walking stiffly, limping, or reluctant to move?",
     "Bathroom Habits: Any change in the frequency, color, or consistency of urine or feces?"
 ]
 
 CAT_CHECKLIST = [
+    
     "Behavior: Is your cat hiding more, less interactive, or vocalizing differently?",
     "Litter Box: Are they using the box normally? Any straining, or going outside the box?",
     "Grooming: Have they stopped grooming (messy coat) or are they over-grooming one spot?",
@@ -87,7 +114,8 @@ CAT_CHECKLIST = [
     "Physical Signs: Any squinting, head tilting, or obvious signs of pain when touched?"
 ]
 
-# --- Helper Functions for Pet Data Persistence ---
+
+# --- Helper Functions for Pet Data  ---
 def load_data():
     if not os.path.exists(DATA_FILE): return {}
     with open(DATA_FILE, 'r') as f:
@@ -104,7 +132,7 @@ def home(): return render_template('index.html')
 
 @app.route('/symptom-checker')
 def symptom_checker():
-    # NEW: Pass checklist data to the template
+    # Pass checklist data to the template
     return render_template('symptom_checker.html', dog_checklist=DOG_CHECKLIST, cat_checklist=CAT_CHECKLIST)
 
 @app.route('/lost-pet-map')
@@ -134,7 +162,17 @@ def get_symptom_advice():
     animal_type = data.get('animal_type')
     symptoms = data.get('symptoms', [])
     if not symptoms: return jsonify({"error": "No symptoms provided"}), 400
-    source_data = DOG_SYMPTOM_DATA if animal_type == 'dog' else CAT_SYMPTOM_DATA
+    
+    source_data = {}
+    # UPDATED: Point to the new data dictionaries
+    if animal_type == 'puppy':
+        source_data = PUPPY_SYMPTOM_DATA
+    elif animal_type == 'adult_dog':
+        source_data = ADULT_DOG_SYMPTOM_DATA
+    elif animal_type == 'cat':
+        source_data = CAT_SYMPTOM_DATA
+    else:
+        return jsonify({"error": "Invalid animal type"}), 400
     
     all_diagnoses, all_actions = set(), set()
     highest_severity, severity_map = "Mild", {"Mild": 1, "Moderate": 2, "Severe": 3, "Potentially Severe": 3, "Significant": 3}

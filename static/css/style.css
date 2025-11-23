@@ -317,3 +317,22 @@ footer {
     flex-basis: 30%; /* Reverted to 30% for three cards */
     transition: all 0.2s ease-in-out;
 }
+
+/* ADD THIS TO THE BOTTOM OF YOUR style.css FILE */
+
+.age-selection-container {
+    margin-top: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.age-selection-container h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.age-selection-container .animal-card p {
+    font-size: 0.9em;
+    color: #666;
+    margin: 5px 0 0 0;
+}

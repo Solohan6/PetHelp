@@ -16,10 +16,49 @@
         <div class="animal-card" id="select-cat">
             <h3>Cats</h3>
         </div>
+        <div class="animal-card wip">
+            <h3>Coming Soon</h3>
+        </div>
     </div>
 
-    <div id="dog-checker" class="checker-container" style="display:none;">
-        <h3>Dog Symptom Checker</h3>
+    <div id="dog-age-selection" class="age-selection-container" style="display:none;">
+        <h3>What is your dog's age?</h3>
+        <div class="animal-selection">
+            <div class="animal-card" id="select-puppy">
+                <h4>Puppy</h4>
+                <p>(Under 1 Year)</p>
+            </div>
+            <div class="animal-card" id="select-adult-dog">
+                <h4>Adult Dog</h4>
+                <p>(1+ Years)</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="puppy-checker" class="checker-container" style="display:none;">
+        <h3>Puppy Symptom Checker</h3>
+        <div class="checklist">
+            <h4>Quick Observation Checklist</h4>
+            <ul>
+                {% for item in dog_checklist %}
+                    <li>{{ item|safe }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="checker-form">
+            <label>Select all applicable symptoms:</label>
+            <div class="symptom-list">
+                <div><input type="checkbox" value="vomiting" id="puppy_vomiting"><label for="puppy_vomiting">Vomiting</label></div>
+                <div><input type="checkbox" value="diarrhea" id="puppy_diarrhea"><label for="puppy_diarrhea">Diarrhea</label></div>
+                <div><input type="checkbox" value="lethargy" id="puppy_lethargy"><label for="puppy_lethargy">Lethargy / Weakness</label></div>
+                <div><input type="checkbox" value="coughing_sneezing" id="puppy_coughing"><label for="puppy_coughing">Coughing / Sneezing</label></div>
+            </div>
+            <button class="get-advice-btn" data-animal="puppy">Get Advice</button>
+        </div>
+    </div>
+    
+    <div id="adult-dog-checker" class="checker-container" style="display:none;">
+        <h3>Adult Dog Symptom Checker</h3>
         <div class="checklist">
             <h4>Quick Observation Checklist</h4>
             <ul>
@@ -37,7 +76,7 @@
                 <div><input type="checkbox" value="coughing" id="dog_coughing"><label for="dog_coughing">Coughing</label></div>
                 <div><input type="checkbox" value="itching_scratching" id="dog_itching"><label for="dog_itching">Itching & Scratching</label></div>
             </div>
-            <button class="get-advice-btn" data-animal="dog">Get Advice</button>
+            <button class="get-advice-btn" data-animal="adult_dog">Get Advice</button>
         </div>
     </div>
 
@@ -79,62 +118,97 @@
 </div>
 
 <script>
-    // The JavaScript for this page is unchanged from the previous version
-    document.addEventListener('DOMContentLoaded', function() {
-        const dogCard = document.getElementById('select-dog');
-        const catCard = document.getElementById('select-cat');
-        const dogChecker = document.getElementById('dog-checker');
-        const catChecker = document.getElementById('cat-checker');
-        const adviceResult = document.getElementById('advice-result');
+document.addEventListener('DOMContentLoaded', function() {
+    // Main selection cards
+    const dogCard = document.getElementById('select-dog');
+    const catCard = document.getElementById('select-cat');
+    
+    // Hidden containers
+    const dogAgeSelection = document.getElementById('dog-age-selection');
+    const puppyChecker = document.getElementById('puppy-checker');
+    const adultDogChecker = document.getElementById('adult-dog-checker');
+    const catChecker = document.getElementById('cat-checker');
+    const adviceResult = document.getElementById('advice-result');
 
-        dogCard.addEventListener('click', () => {
-            dogChecker.style.display = 'block';
-            catChecker.style.display = 'none';
-            adviceResult.style.display = 'none';
-        });
+    // Age selection cards
+    const puppyCard = document.getElementById('select-puppy');
+    const adultDogCard = document.getElementById('select-adult-dog');
 
-        catCard.addEventListener('click', () => {
-            dogChecker.style.display = 'none';
-            catChecker.style.display = 'block';
-            adviceResult.style.display = 'none';
-        });
+    // Hide all checkers
+    function hideAllCheckers() {
+        dogAgeSelection.style.display = 'none';
+        puppyChecker.style.display = 'none';
+        adultDogChecker.style.display = 'none';
+        catChecker.style.display = 'none';
+        adviceResult.style.display = 'none';
+    }
 
-        document.querySelectorAll('.get-advice-btn').forEach(button => {
-            button.addEventListener('click', async () => {
-                const animalType = button.dataset.animal;
-                const checkerDiv = document.getElementById(`${animalType}-checker`);
-                const checkedBoxes = checkerDiv.querySelectorAll('input[type="checkbox"]:checked');
-                const symptoms = Array.from(checkedBoxes).map(cb => cb.value);
+    // Main "Dog" card click
+    dogCard.addEventListener('click', () => {
+        hideAllCheckers();
+        dogAgeSelection.style.display = 'block';
+    });
 
-                if (symptoms.length === 0) {
-                    alert('Please select at least one symptom.');
-                    return;
-                }
+    // Main "Cat" card click
+    catCard.addEventListener('click', () => {
+        hideAllCheckers();
+        catChecker.style.display = 'block';
+    });
 
-                const response = await fetch('/api/symptom-check', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ animal_type: animalType, symptoms: symptoms }),
-                });
-                const data = await response.json();
+    // "Puppy" age card click
+    puppyCard.addEventListener('click', () => {
+        hideAllCheckers();
+        dogAgeSelection.style.display = 'block'; // Keep age selection visible
+        puppyChecker.style.display = 'block';
+    });
+    
+    // "Adult Dog" age card click
+    adultDogCard.addEventListener('click', () => {
+        hideAllCheckers();
+        dogAgeSelection.style.display = 'block'; // Keep age selection visible
+        adultDogChecker.style.display = 'block';
+    });
 
-                if (Object.keys(data).length > 0) {
-                    document.getElementById('severity').textContent = data.severity;
-                    document.getElementById('course-of-action').textContent = data.course_of_action;
-                    const diagnosesList = document.getElementById('probable-diagnoses');
-                    diagnosesList.innerHTML = '';
-                    data.probable_diagnoses.forEach(diag => {
-                        const li = document.createElement('li');
-                        li.textContent = diag;
-                        diagnosesList.appendChild(li);
-                    });
-                    adviceResult.style.display = 'block';
-                } else {
-                    alert('Could not retrieve advice for the selected symptoms.');
-                    adviceResult.style.display = 'none';
-                }
+    // "Get Advice" button clicks
+    document.querySelectorAll('.get-advice-btn').forEach(button => {
+        button.addEventListener('click', async () => {
+            const animalType = button.dataset.animal;
+            const checkerDiv = document.getElementById(`${animalType}-checker`);
+            const checkedBoxes = checkerDiv.querySelectorAll('input[type="checkbox"]:checked');
+            
+            const symptoms = Array.from(checkedBoxes).map(cb => cb.value);
+
+            if (symptoms.length === 0) {
+                alert('Please select at least one symptom.');
+                return;
+            }
+
+            const response = await fetch('/api/symptom-check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ animal_type: animalType, symptoms: symptoms }),
             });
+            const data = await response.json();
+
+            if (data && Object.keys(data).length > 0) {
+                document.getElementById('severity').textContent = data.severity;
+                document.getElementById('course-of-action').textContent = data.course_of_action;
+                
+                const diagnosesList = document.getElementById('probable-diagnoses');
+                diagnosesList.innerHTML = ''; // Clear previous results
+                data.probable_diagnoses.forEach(diag => {
+                    const li = document.createElement('li');
+                    li.textContent = diag;
+                    diagnosesList.appendChild(li);
+                });
+
+                adviceResult.style.display = 'block';
+            } else {
+                alert('Could not retrieve advice for the selected symptoms.');
+                adviceResult.style.display = 'none';
+            }
         });
     });
+});
 </script>
 {% endblock %}
